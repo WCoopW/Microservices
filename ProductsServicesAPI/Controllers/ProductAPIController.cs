@@ -5,7 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace ProductsServicesAPI.Controllers
 {
-    [Route("api/product")]
+    [Route("api/products")]
     public class ProductAPIController : ControllerBase
     {
         protected ResponseDTO _response;
@@ -26,6 +26,75 @@ namespace ProductsServicesAPI.Controllers
 
             }
             catch(Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.Message };
+            }
+            return _response;
+        }
+
+        [HttpGet]
+        [Route("(id)")]
+        public async Task<object> Get(int id)
+        {
+            try
+            {
+                ProductDTO productDto = await _productRepository.GetProductById(id);
+                _response.Result = productDto;
+
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.Message };
+            }
+            return _response;
+        }
+
+        [HttpPost]
+        public async Task<object> Post([FromBody] ProductDTO productDTO)
+        {
+            try
+            {
+                ProductDTO model = await _productRepository.CreateUpdateProduct(productDTO);
+                _response.Result = model;
+
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.Message };
+            }
+            return _response;
+        }
+
+        [HttpPut]
+        public async Task<object> Put([FromBody] ProductDTO productDTO)
+        {
+            try
+            {
+                ProductDTO model = await _productRepository.CreateUpdateProduct(productDTO);
+                _response.Result = model;
+
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { ex.Message };
+            }
+            return _response;
+        }
+
+        [HttpDelete]
+        public async Task<object> Delete(int id)
+        {
+            try
+            {
+                bool productDTO = await _productRepository.DeleteProduct(id);
+                _response.Result = productDTO;
+
+            }
+            catch (Exception ex)
             {
                 _response.IsSuccess = false;
                 _response.ErrorMessages = new List<string> { ex.Message };
